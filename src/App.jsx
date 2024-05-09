@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback } from "react";
 import db from "./firebase/config";
 import {
   collection,
@@ -9,10 +9,11 @@ import {
   deleteDoc,
 } from "@firebase/firestore";
 import { useEffect } from "react";
+import { useImmer } from "use-immer";
 
 function App() {
   const invoiceCollectionRef = collection(db, "invoices");
-  const [invoiceRead, setInvoiceRead] = useState([]);
+  const [invoiceRead, setInvoiceRead] = useImmer([]);
   useEffect(() => {
     const invoiceGetData = async () => {
       const data = await getDocs(invoiceCollectionRef);
@@ -21,17 +22,18 @@ function App() {
     };
     invoiceGetData();
   }, []);
-  const [invoiceDetails, setInvoiceDetails] = useState({
+  const [invoiceDetails, setInvoiceDetails] = useImmer({
     customerName: "",
     billingDate: new Date().toISOString().slice(0, 10),
     productName: "",
     deliveryDate: new Date().toISOString().slice(0, 10),
   });
-  function handleChange(e) {
+  const handleChange = useCallback((e) => {
     const { name, value } = e.target;
     setInvoiceDetails({ ...invoiceDetails, [name]: value });
     console.log(invoiceDetails);
-  }
+  });
+
   async function handleEdit(id, fields) {
     const invDoc = doc(db, "invoices", id);
     await updateDoc(invDoc, fields);
@@ -43,7 +45,7 @@ function App() {
     window.location.reload();
   }
 
-  async function handleSubmit() {
+  const handleSubmit = useCallback(async () => {
     const etto = await addDoc(invoiceCollectionRef, {
       customerName: invoiceDetails.customerName,
       billingDate: invoiceDetails.billingDate,
@@ -58,7 +60,7 @@ function App() {
       deliveryDate: new Date().toISOString().slice(0, 10),
     });
     window.location.reload();
-  }
+  });
 
   return (
     <>
