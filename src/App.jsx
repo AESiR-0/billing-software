@@ -10,6 +10,9 @@ import {
 } from "@firebase/firestore";
 import { useEffect } from "react";
 import { useImmer } from "use-immer";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Create, Home, View, Login } from './pages'
 
 function App() {
   const invoiceCollectionRef = collection(db, "invoices");
@@ -78,6 +81,7 @@ function App() {
               onChange={(e) => handleChange(e)}
               value={invoiceDetails.customerName}
             />
+
             <input
               type="date"
               placeholder="Billing date"
@@ -146,6 +150,14 @@ function App() {
           );
         })}
       </div>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<Login />} path={'login'} />
+          <Route element={<View />} path={'view'} />
+          <Route element={<Create />} path={'create'} />
+          <Route element={<Home />} index path={'/'} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }
