@@ -10,9 +10,11 @@ import {
 } from "@firebase/firestore";
 import { useEffect } from "react";
 import { useImmer } from "use-immer";
-import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Create, Home, View, Login } from './pages'
+import Create from './pages/Create'
+import View from './pages/View'
+import Login from './pages/Login'
+import Home from './pages/Home'
 
 function App() {
   const invoiceCollectionRef = collection(db, "invoices");
@@ -152,10 +154,10 @@ function App() {
       </div>
       <BrowserRouter>
         <Routes>
-          <Route element={<Login />} path={'login'} />
+          <Route element={<Login />} path={'/'} />
           <Route element={<View />} path={'view'} />
           <Route element={<Create />} path={'create'} />
-          <Route element={<Home />} index path={'/'} />
+          <Route element={<Home />} index path={'/home'} />
         </Routes>
       </BrowserRouter>
     </>
