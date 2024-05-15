@@ -16,6 +16,7 @@
     "immer": "^10.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-toastify": "^10.0.5",
     "tw-elements-react": "^1.0.0-alpha2",
     "use-immer": "^0.9.0"
   },
